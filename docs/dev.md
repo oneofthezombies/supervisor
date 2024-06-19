@@ -27,3 +27,11 @@ pip install -r requirements.txt
 
 VS Code에서 아무 `.py` 파일 연 상태에서,
 오른쪽 하단 인터프리터 선택에서 .venv 인터프리터를 선택합니다.
+
+### Dangling Docker Image 삭제
+
+아래 명령어를 통해 사용하지 않는 Dangling 이미지를 삭제합니다.
+
+```sh
+docker image prune -f
+```

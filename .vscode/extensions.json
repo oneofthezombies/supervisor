@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "ms-python.black-formatter",
+    "usernamehw.errorlens",
+    "esbenp.prettier-vscode",
+    "ms-python.python",
+    "ms-python.debugpy"
+  ]
+}

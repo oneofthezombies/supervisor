@@ -13,3 +13,17 @@
 ```sh
 docker compose -f compose.dev.yaml up --build
 ```
+
+### VS Code Python 지원
+
+```sh
+python -m venv .venv
+
+# pwsh에서
+.venv\Scripts\activate.ps1
+
+pip install -r requirements.txt
+```
+
+VS Code에서 아무 `.py` 파일 연 상태에서,
+오른쪽 하단 인터프리터 선택에서 .venv 인터프리터를 선택합니다.

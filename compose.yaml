@@ -1,0 +1,30 @@
+services:
+  api:
+    build: .
+    image: supervisor-api:latest
+    restart: always
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: db
+      DB_PORT: 5432
+    ports:
+      - "${API_PORT}:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16.3-alpine3.20
+    restart: always
+    environment:
+      POSTGRES_DB: supervisor
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:5432"
+
+volumes:
+  db_data:
+    driver: local

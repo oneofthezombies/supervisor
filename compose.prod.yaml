@@ -1,0 +1,11 @@
+include:
+  - compose.base.yaml
+
+services:
+  api:
+    build: .
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/supervisor
+    ports:
+      - "${API_PORT}:8000"

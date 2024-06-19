@@ -29,5 +29,5 @@ cp .env.example .env
 아래 명령어를 호출해, 도커 환경에서 API 서버와 DB를 실행합니다.
 
 ```sh
-docker compose up --build
+docker compose -f compose.prod.yaml up --build
 ```

@@ -1,22 +1,24 @@
 services:
-  reservation-api:
+  api:
     build: .
     restart: always
+    environment:
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/supervisor
     ports:
-      - "8000:8000"
+      - "${API_PORT}:8000"
 
-  reservation-db:
+  db:
     image: postgres:16.3-alpine3.20
     restart: always
     environment:
       POSTGRES_DB: supervisor
-      POSTGRES_USER: supervisor
-      POSTGRES_PASSWORD: supervisor
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - reservation_db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     ports:
-      - "8110:5432"
+      - "${DB_PORT}:5432"
 
 volumes:
-  reservation_db_data:
+  db_data:
     driver: local

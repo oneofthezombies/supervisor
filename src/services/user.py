@@ -1,5 +1,4 @@
-from typing import Optional
-
+###############################
 # ignore passlib warning begin
 import bcrypt
 
@@ -13,23 +12,23 @@ if not hasattr(bcrypt, "__about__"):
     setattr(about, "__version__", "1.0.0")
     setattr(bcrypt, "__about__", about)
 # ignore passlib warning end
+###############################
 
+from typing import Optional
+from typing_extensions import Annotated
 
 from fastapi import Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from passlib.context import CryptContext
 
-from src import database, models, schemas
+from src import models, schemas
+from src.database import DBDep
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated=["auto"])
 
 
 class UserService:
-    async def get(db: AsyncSession = Depends(database.get_db)):
-        return UserService(db)
-
-    def __init__(self, db: AsyncSession):
+    def __init__(self, db: DBDep):
         self.db = db
 
     async def get_user_by_username(self, username: str) -> Optional[models.User]:
@@ -60,3 +59,6 @@ class UserService:
                 headers={"WWW-Authenticate": "Basic"},
             )
         return user
+
+
+UserServiceDep = Annotated[UserService, Depends(UserService)]

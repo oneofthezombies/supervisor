@@ -1,7 +1,10 @@
 from typing import cast
+
+from fastapi import Depends
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from typing_extensions import Annotated
 
 from src.common import database_url
 
@@ -17,3 +20,6 @@ async def get_db():
             yield sess
         finally:
             await sess.close()
+
+
+DBDep = Annotated[AsyncSession, Depends(get_db)]

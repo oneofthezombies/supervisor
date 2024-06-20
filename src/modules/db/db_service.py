@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.modules.db import db_common
 
 
-async def get():
+async def get_db_service():
     async with db_common.SessionLocal() as sess:
         sess = cast(AsyncSession, sess)
         try:
@@ -16,4 +16,4 @@ async def get():
             await sess.close()
 
 
-Dep = Annotated[AsyncSession, Depends(get)]
+Dep = Annotated[AsyncSession, Depends(get_db_service)]

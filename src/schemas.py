@@ -3,6 +3,12 @@ from pydantic import BaseModel
 from src.common import RoleEnum
 
 
+class Token(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str
+
+
 class UserBase(BaseModel):
     username: str
     role: RoleEnum

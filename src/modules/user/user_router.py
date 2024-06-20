@@ -1,32 +1,20 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 
-from src import schemas
+from src.modules.auth.auth_common import FormDep
+from src.schemas import User, UserCreate
 from src.modules.user import user_service
+from src.modules.permission.permission_deps import CurrentUserDep
 
-router = APIRouter()
-
-
-@router.post("/users/login")
-async def login_user():
-    """
-    Basic 인증
-    """
+router = APIRouter(prefix="/users")
 
 
-@router.post("/users/logout")
-async def logout_user():
-    """
-    토큰 인증
-    """
+@router.post("/", response_model=User)
+async def create_user(form_data: FormDep, user_service: user_service.Dep):
+    return await user_service.create_user_if_not_exist_by_username(
+        UserCreate(username=form_data.username, password=form_data.password)
+    )
 
 
-@router.post("/users", response_model=schemas.User)
-async def create_user(dto: schemas.UserCreate, user_service: user_service.Dep):
-    user = await user_service.get_user_by_username(username=dto.username)
-    if user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username already registered",
-        )
-
-    return await user_service.create_user(dto)
+@router.get("/me", response_model=User)
+async def read_me(current_user: CurrentUserDep):
+    return current_user

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from src.modules.auth import auth_common, auth_service
-from src.schemas import Token
+from app.modules.auth import auth_common, auth_service
+from app.schemas import Token
 
 
 router = APIRouter(prefix="/auth")

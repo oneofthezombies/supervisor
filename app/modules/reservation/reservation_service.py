@@ -5,11 +5,11 @@ from sqlalchemy import func, select
 from typing_extensions import Annotated
 from fastapi import Depends, HTTPException, status
 
-from src import models
-from src.common import RoleEnum
-from src.modules.db import db_service
-from src.modules.permission.permission_deps import CurrentUserDep
-from src.schemas import (
+from app import models
+from app.common import RoleEnum
+from app.modules.db import db_service
+from app.modules.permission.permission_deps import CurrentUserDep
+from app.schemas import (
     Reservation,
     ReservationPublic,
     ReservationCreate,

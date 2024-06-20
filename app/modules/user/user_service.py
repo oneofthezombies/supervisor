@@ -6,9 +6,9 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.future import select
 from passlib.context import CryptContext
 
-from src import models
-from src.modules.db import db_service
-from src.schemas import User, UserCreate, UserSecret
+from app import models
+from app.modules.db import db_service
+from app.schemas import User, UserCreate, UserSecret
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated=["auto"])
 

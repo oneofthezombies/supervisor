@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 
-from src.common import RoleEnum
+from app.common import RoleEnum
 
 
 class Token(BaseModel):

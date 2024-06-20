@@ -1,4 +1,4 @@
-from src.common import ignore_passlib_warning
+from app.common import ignore_passlib_warning
 
 ignore_passlib_warning()
 
@@ -6,10 +6,10 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from src.modules.db import db_common
-from src.modules.auth import auth_router
-from src.modules.user import user_router
-from src.modules.reservation import reservation_router
+from app.modules.db import db_common
+from app.modules.auth import auth_router
+from app.modules.user import user_router
+from app.modules.reservation import reservation_router
 
 
 @asynccontextmanager

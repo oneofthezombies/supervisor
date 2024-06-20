@@ -7,7 +7,7 @@ Create Date: 2024-06-21 01:07:02.920121
 """
 
 import os
-from src.common import ignore_passlib_warning
+from app.common import ignore_passlib_warning
 
 ignore_passlib_warning()
 

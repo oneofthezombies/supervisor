@@ -4,7 +4,7 @@ from fastapi import Depends
 from typing_extensions import Annotated
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.modules.db import db_common
+from app.modules.db import db_common
 
 
 async def get_db_service():

@@ -1,10 +1,10 @@
 from typing_extensions import Annotated
 from fastapi import Depends, HTTPException, status
 
-from src.modules.auth.auth_common import TokenDep
-from src.schemas import User
-from src.common import RoleEnum
-from src.modules.auth import auth_service
+from app.modules.auth.auth_common import TokenDep
+from app.schemas import User
+from app.common import RoleEnum
+from app.modules.auth import auth_service
 
 
 async def get_current_user(token: TokenDep, auth_service: auth_service.Dep) -> User:

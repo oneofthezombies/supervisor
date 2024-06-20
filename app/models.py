@@ -11,8 +11,8 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
-from src.common import RoleEnum
-from src.modules.db import db_common
+from app.common import RoleEnum
+from app.modules.db import db_common
 
 
 class User(db_common.Base):

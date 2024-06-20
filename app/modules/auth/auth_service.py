@@ -7,8 +7,8 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasicCredentials, OAuth2PasswordRequestForm
 import jwt
 
-from src.schemas import Token, User
-from src.modules.user import user_service
+from app.schemas import Token, User
+from app.modules.user import user_service
 
 
 AUTH_JWT_SECRET_KEY = os.environ["AUTH_JWT_SECRET_KEY"]

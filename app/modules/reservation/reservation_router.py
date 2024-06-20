@@ -2,9 +2,9 @@ from datetime import datetime
 from typing import List
 from fastapi import APIRouter
 
-from src.modules.reservation import reservation_service
-from src.modules.permission.permission_deps import CurrentUserDep, CurrentAdminUserDep
-from src.schemas import Reservation, ReservationCreate, ReservationUpdate
+from app.modules.reservation import reservation_service
+from app.modules.permission.permission_deps import CurrentUserDep, CurrentAdminUserDep
+from app.schemas import Reservation, ReservationCreate, ReservationUpdate
 
 router = APIRouter(prefix="/reservations")
 

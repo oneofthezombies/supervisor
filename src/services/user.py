@@ -15,9 +15,9 @@ if not hasattr(bcrypt, "__about__"):
 ###############################
 
 from typing import Optional
-from typing_extensions import Annotated
 
-from fastapi import Depends, HTTPException, status
+from typing_extensions import Annotated
+from fastapi import Depends
 from sqlalchemy.future import select
 from passlib.context import CryptContext
 
@@ -48,17 +48,8 @@ class UserService:
         await self.db.refresh(user)
         return user
 
-    async def authenticate_user(self, username: str, password: str):
-        user: models.User | None = await self.get_user_by_username(self.db, username)
-        if not user:
-            return user
-        if not password_context.verify(password, user.hashed_password):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid password",
-                headers={"WWW-Authenticate": "Basic"},
-            )
-        return user
+    async def verify_password(self, password: str, user: models.User) -> bool:
+        return password_context.verify(password, user.hashed_password)
 
 
 UserServiceDep = Annotated[UserService, Depends(UserService)]

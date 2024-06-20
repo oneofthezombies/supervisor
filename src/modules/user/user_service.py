@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from typing import Optional
 
 from typing_extensions import Annotated
@@ -37,25 +38,28 @@ class UserService:
         return user
 
     async def create_user(self, dto: UserCreate) -> User:
-        async with self.db_service.begin():
-            hashed_password = password_context.hash(dto.password)
-            user = models.User(
-                username=dto.username,
-            )
-            self.db_service.add(user)
-            await self.db_service.flush()
+        hashed_password = password_context.hash(dto.password)
+        user = models.User(
+            username=dto.username,
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc),
+        )
+        self.db_service.add(user)
+        await self.db_service.flush()
 
-            user_secret = models.UserSecret(
-                user_id=user.id,
-                hashed_password=hashed_password,
-            )
-            self.db_service.add(user_secret)
-            await self.db_service.commit()
-            await self.db_service.refresh(user)
-            return user
+        user_secret = models.UserSecret(
+            user_id=user.id,
+            hashed_password=hashed_password,
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc),
+        )
+        self.db_service.add(user_secret)
+        await self.db_service.commit()
+        await self.db_service.refresh(user)
+        return user
 
     async def create_user_if_not_exist_by_username(self, dto: UserCreate) -> User:
-        user = await self.get_user_by_username(username=dto.username)
+        user: User | None = await self.get_user_by_username(username=dto.username)
         if user:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,

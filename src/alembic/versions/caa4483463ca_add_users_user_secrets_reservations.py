@@ -1,25 +1,25 @@
 """add users user_secrets reservations
 
-Revision ID: 5c616f1e2bce
+Revision ID: caa4483463ca
 Revises: 
-Create Date: 2024-06-21 00:40:37.341934
+Create Date: 2024-06-21 01:07:02.920121
 
 """
 
-from datetime import datetime, timezone
+import os
 from src.common import ignore_passlib_warning
 
 ignore_passlib_warning()
 
-import os
 from typing import Sequence, Union
+from datetime import datetime, timezone
 
 from alembic import op
 import sqlalchemy as sa
 from passlib.context import CryptContext
 
 # revision identifiers, used by Alembic.
-revision: str = "5c616f1e2bce"
+revision: str = "caa4483463ca"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -35,9 +35,9 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("username", sa.String(), nullable=True),
         sa.Column("role", sa.Enum("basic", "admin", name="roleenum"), nullable=True),
-        sa.Column("created_at", sa.DateTime(), nullable=True),
-        sa.Column("updated_at", sa.DateTime(), nullable=True),
-        sa.Column("deleted_at", sa.DateTime(), nullable=True),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("deleted_at", sa.DateTime(timezone=True), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_users_id"), "users", ["id"], unique=False)
@@ -46,13 +46,13 @@ def upgrade() -> None:
         "reservations",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("user_id", sa.Integer(), nullable=True),
-        sa.Column("start_at", sa.DateTime(), nullable=True),
-        sa.Column("end_at", sa.DateTime(), nullable=True),
+        sa.Column("start_at", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("end_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column("applicant_count", sa.Integer(), nullable=True),
         sa.Column("is_confirmed", sa.Boolean(), nullable=True),
-        sa.Column("created_at", sa.DateTime(), nullable=True),
-        sa.Column("updated_at", sa.DateTime(), nullable=True),
-        sa.Column("deleted_at", sa.DateTime(), nullable=True),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("deleted_at", sa.DateTime(timezone=True), nullable=True),
         sa.ForeignKeyConstraint(
             ["user_id"],
             ["users.id"],
@@ -68,9 +68,9 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.Column("hashed_password", sa.String(), nullable=True),
-        sa.Column("created_at", sa.DateTime(), nullable=True),
-        sa.Column("updated_at", sa.DateTime(), nullable=True),
-        sa.Column("deleted_at", sa.DateTime(), nullable=True),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("deleted_at", sa.DateTime(timezone=True), nullable=True),
         sa.ForeignKeyConstraint(
             ["user_id"],
             ["users.id"],
@@ -93,14 +93,18 @@ def upgrade() -> None:
             sa.Column(
                 "role", sa.Enum("basic", "admin", name="roleenum"), nullable=True
             ),
-            sa.Column("created_at", sa.DateTime(), default=datetime.now(timezone.utc)),
+            sa.Column(
+                "created_at",
+                sa.DateTime(timezone=True),
+                default=datetime.now(timezone.utc),
+            ),
             sa.Column(
                 "updated_at",
-                sa.DateTime(),
+                sa.DateTime(timezone=True),
                 default=datetime.now(timezone.utc),
                 onupdate=datetime.now(timezone.utc),
             ),
-            sa.Column("deleted_at", sa.DateTime(), nullable=True),
+            sa.Column("deleted_at", sa.DateTime(timezone=True), nullable=True),
         ),
         [
             {
@@ -129,14 +133,18 @@ def upgrade() -> None:
             sa.Column("id", sa.Integer(), primary_key=True, nullable=False),
             sa.Column("user_id", sa.Integer(), nullable=False),
             sa.Column("hashed_password", sa.String(), nullable=True),
-            sa.Column("created_at", sa.DateTime(), default=datetime.now(timezone.utc)),
+            sa.Column(
+                "created_at",
+                sa.DateTime(timezone=True),
+                default=datetime.now(timezone.utc),
+            ),
             sa.Column(
                 "updated_at",
-                sa.DateTime(),
+                sa.DateTime(timezone=True),
                 default=datetime.now(timezone.utc),
                 onupdate=datetime.now(timezone.utc),
             ),
-            sa.Column("deleted_at", sa.DateTime(), nullable=True),
+            sa.Column("deleted_at", sa.DateTime(timezone=True), nullable=True),
         ),
         [
             {

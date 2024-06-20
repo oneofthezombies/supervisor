@@ -21,13 +21,13 @@ class User(db_common.Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     role = Column(Enum(RoleEnum), default=RoleEnum.basic)
-    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc))
     updated_at = Column(
-        DateTime,
+        DateTime(timezone=True),
         default=datetime.now(timezone.utc),
         onupdate=datetime.now(timezone.utc),
     )
-    deleted_at = Column(DateTime, nullable=True)
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     secret = relationship(
         "UserSecret",
@@ -48,15 +48,15 @@ class UserSecret(db_common.Base):
     )
     hashed_password = Column(String)
     created_at = Column(
-        DateTime,
+        DateTime(timezone=True),
         default=datetime.now(timezone.utc),
     )
     updated_at = Column(
-        DateTime,
+        DateTime(timezone=True),
         default=datetime.now(timezone.utc),
         onupdate=datetime.now(timezone.utc),
     )
-    deleted_at = Column(DateTime, nullable=True)
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     user = relationship(
         "User",
@@ -69,17 +69,17 @@ class Reservation(db_common.Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), index=True)
-    start_at = Column(DateTime)
-    end_at = Column(DateTime)
+    start_at = Column(DateTime(timezone=True))
+    end_at = Column(DateTime(timezone=True))
     applicant_count = Column(Integer)
     is_confirmed = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc))
     updated_at = Column(
-        DateTime,
+        DateTime(timezone=True),
         default=datetime.now(timezone.utc),
         onupdate=datetime.now(timezone.utc),
     )
-    deleted_at = Column(DateTime, nullable=True)
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     __tableargs__ = Index(
         "ix_reservations_confirms",

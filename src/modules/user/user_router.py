@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 
 from src import schemas
-from src.services.user import UserServiceDep
+from src.modules.user import user_service
 
 router = APIRouter()
 
@@ -21,7 +21,7 @@ async def logout_user():
 
 
 @router.post("/users", response_model=schemas.User)
-async def create_user(dto: schemas.UserCreate, user_service: UserServiceDep):
+async def create_user(dto: schemas.UserCreate, user_service: user_service.Dep):
     user = await user_service.get_user_by_username(username=dto.username)
     if user:
         raise HTTPException(

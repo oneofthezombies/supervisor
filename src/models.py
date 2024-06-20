@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, String, Enum
 
 from src.common import RoleEnum
-from src.database import Base
+from src.modules.db import db_common
 
 
-class User(Base):
+class User(db_common.Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)

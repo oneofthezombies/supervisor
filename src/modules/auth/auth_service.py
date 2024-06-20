@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.common import RoleEnum
 from src import database, models
-from services.user import UserService, UserServiceDep
+from src.modules.user import UserService, UserServiceDep
 
 
 security = HTTPBasic()

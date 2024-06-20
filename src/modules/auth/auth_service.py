@@ -22,7 +22,7 @@ class AuthService:
         self.user_service = user_service
 
     async def create_token(self, form_data: OAuth2PasswordRequestForm) -> Token:
-        user = await self.user_service.get_db_user_by_username(
+        user = await self.user_service.get_user_by_username(
             form_data.username,
         )
         if not user:
@@ -32,9 +32,10 @@ class AuthService:
                 headers={"WWW-Authenticate": "Basic"},
             )
 
+        user_secret = await self.user_service.get_user_secret_by_user_id(user.id)
         if not self.user_service.verify_password(
             form_data.password,
-            user.hashed_password,
+            user_secret.hashed_password,
         ):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

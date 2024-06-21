@@ -42,7 +42,7 @@ docker compose up -d db
 아래 명령어를 호출해, DB를 마이그레이션하고 admin 유저를 생성합니다.
 
 ```sh
-python scripts/env.py alembic upgrade head
+dotenv run -- alembic upgrade head
 ```
 
 ### 4. API 서버 빌드 및 실행

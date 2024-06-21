@@ -42,11 +42,11 @@ VS Code에서 아무 `.py` 파일 연 상태에서,
 ### API 서버 실행
 
 ```sh
-python scripts/env.py fastapi dev src/main.py --reload
+dotenv run -- fastapi dev src/main.py --reload
 ```
 
 ## DB 마이그레이션 생성
 
 ```sh
-python scripts/env.py alembic revision --autogenerate -m "<your message>"
+dotenv run -- alembic revision --autogenerate -m "<your message>"
 ```

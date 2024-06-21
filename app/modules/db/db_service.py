@@ -4,11 +4,11 @@ from fastapi import Depends
 from typing_extensions import Annotated
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.modules.db import db_common
+from app.database import SessionLocal
 
 
 async def get_db_service():
-    async with db_common.SessionLocal() as sess:
+    async with SessionLocal() as sess:
         sess = cast(AsyncSession, sess)
         try:
             yield sess

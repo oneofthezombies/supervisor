@@ -7,6 +7,7 @@ from sqlalchemy.future import select
 from passlib.context import CryptContext
 
 from app import models
+from app.common import utcnow
 from app.modules.db import db_service
 from app.schemas import User, UserCreate, UserSecret
 
@@ -41,8 +42,8 @@ class UserService:
         hashed_password = password_context.hash(dto.password)
         user = models.User(
             username=dto.username,
-            created_at=datetime.now(timezone.utc),
-            updated_at=datetime.now(timezone.utc),
+            created_at=utcnow(),
+            updated_at=utcnow(),
         )
         self.db_service.add(user)
         await self.db_service.flush()
@@ -50,8 +51,8 @@ class UserService:
         user_secret = models.UserSecret(
             user_id=user.id,
             hashed_password=hashed_password,
-            created_at=datetime.now(timezone.utc),
-            updated_at=datetime.now(timezone.utc),
+            created_at=utcnow(),
+            updated_at=utcnow(),
         )
         self.db_service.add(user_secret)
         await self.db_service.commit()

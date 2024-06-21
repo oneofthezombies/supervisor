@@ -3,7 +3,7 @@ from fastapi import Depends, HTTPException, status
 
 from app.modules.auth.auth_common import TokenDep
 from app.schemas import User
-from app.common import RoleEnum
+from app.common import Role
 from app.modules.auth import auth_service
 
 
@@ -22,7 +22,7 @@ CurrentUserDep = Annotated[User, Depends(get_current_user)]
 
 
 async def get_current_admin_user(user: CurrentUserDep) -> User:
-    if user.role != RoleEnum.admin:
+    if user.role != Role.admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Invalid permission"
         )

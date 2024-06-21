@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from app.modules.auth.auth_common import FormDep
 from app.schemas import User, UserCreate
 from app.modules.user import user_service
-from app.modules.permission.permission_deps import CurrentUserDep
+from app.modules.auth.auth_deps import CurrentUserDep
 
 router = APIRouter(prefix="/users")
 

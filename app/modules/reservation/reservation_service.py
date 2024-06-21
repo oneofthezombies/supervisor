@@ -6,9 +6,9 @@ from typing_extensions import Annotated
 from fastapi import Depends, HTTPException, status
 
 from app import models
-from app.common import RoleEnum
+from app.common import Role, utcnow
 from app.modules.db import db_service
-from app.modules.permission.permission_deps import CurrentUserDep
+from app.modules.auth.auth_deps import CurrentUserDep
 from app.schemas import (
     Reservation,
     ReservationPublic,
@@ -28,7 +28,7 @@ class ReservationService:
 
     async def read_reservations(self) -> List[Reservation]:
         query = select(models.Reservation)
-        if self.current_user.role == RoleEnum.basic:
+        if self.current_user.role == Role.basic:
             query = query.where(models.Reservation.user_id == self.current_user.id)
 
         result = await self.db_service.execute(query)
@@ -57,8 +57,8 @@ class ReservationService:
             start_at=dto.start_at,
             end_at=dto.end_at,
             applicant_count=dto.applicant_count,
-            created_at=datetime.now(timezone.utc),
-            updated_at=datetime.now(timezone.utc),
+            created_at=utcnow(),
+            updated_at=utcnow(),
         )
         self.db_service.add(reservation)
         await self.db_service.commit()
@@ -70,7 +70,7 @@ class ReservationService:
     ) -> Reservation:
         reservation = await self._get_reservation(reservation_id)
 
-        if self.current_user.role == RoleEnum.basic:
+        if self.current_user.role == Role.basic:
             if reservation.id != self.current_user.id:
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
@@ -100,7 +100,7 @@ class ReservationService:
     async def delete_reservation(self, reservation_id: int) -> Reservation:
         reservation = await self._get_reservation(reservation_id)
 
-        if self.current_user.role == RoleEnum.basic:
+        if self.current_user.role == Role.basic:
             if reservation.id != self.current_user.id:
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
@@ -119,7 +119,7 @@ class ReservationService:
                 detail="Reservation has already been deleted",
             )
 
-        reservation.deleted_at = datetime.now(timezone.utc)
+        reservation.deleted_at = utcnow()
         await self.db_service.commit()
         await self.db_service.refresh(reservation)
         return reservation
@@ -167,7 +167,7 @@ class ReservationService:
         return reservation
 
     async def _validate_start_at_and_end_at(self, start_at: datetime, end_at: datetime):
-        if start_at < datetime.now(timezone.utc) + timedelta(days=3):
+        if start_at < utcnow() + timedelta(days=3):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Reservations can be made up to 3 days in advance",

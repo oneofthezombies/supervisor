@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 import enum
 import os
 
@@ -24,6 +25,10 @@ def database_url(async_=True):
     return f"{protocol}://{os.environ['DB_USERNAME']}:{os.environ['DB_PASSWORD']}@{os.environ['DB_HOST']}:{os.environ['DB_PORT']}/supervisor"
 
 
-class RoleEnum(str, enum.Enum):
+def utcnow():
+    return datetime.now(timezone.utc)
+
+
+class Role(enum.Enum):
     basic = "basic"
     admin = "admin"

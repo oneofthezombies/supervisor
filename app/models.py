@@ -1,33 +1,37 @@
-from datetime import datetime, timezone
+from datetime import datetime
+from typing import Optional
+from typing_extensions import Annotated
+
 from sqlalchemy import (
-    Boolean,
-    Column,
-    DateTime,
     ForeignKey,
     Index,
-    Integer,
-    String,
-    Enum,
 )
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, mapped_column, Mapped
 
-from app.common import RoleEnum
-from app.modules.db import db_common
+from app.common import Role, utcnow
+from app import database
+
+IntPk = Annotated[int, mapped_column(primary_key=True)]
+CreatedAt = Annotated[datetime, mapped_column(default=utcnow())]
+UpdatedAt = Annotated[
+    datetime,
+    mapped_column(
+        default=utcnow(),
+        onupdate=utcnow(),
+    ),
+]
+DeletedAt = Annotated[Optional[datetime], mapped_column()]
 
 
-class User(db_common.Base):
+class User(database.Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
-    role = Column(Enum(RoleEnum), default=RoleEnum.basic)
-    created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc))
-    updated_at = Column(
-        DateTime(timezone=True),
-        default=datetime.now(timezone.utc),
-        onupdate=datetime.now(timezone.utc),
-    )
-    deleted_at = Column(DateTime(timezone=True), nullable=True)
+    id: Mapped[IntPk]
+    username: Mapped[str] = mapped_column(unique=True, index=True)
+    role: Mapped[Role] = mapped_column(default=Role.basic)
+    created_at: Mapped[CreatedAt]
+    updated_at: Mapped[UpdatedAt]
+    deleted_at: Mapped[DeletedAt]
 
     secret = relationship(
         "UserSecret",
@@ -36,27 +40,19 @@ class User(db_common.Base):
     )
 
 
-class UserSecret(db_common.Base):
+class UserSecret(database.Base):
     __tablename__ = "user_secrets"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(
-        Integer,
+    id: Mapped[IntPk]
+    user_id: Mapped[int] = mapped_column(
         ForeignKey("users.id"),
         unique=True,
         index=True,
     )
-    hashed_password = Column(String)
-    created_at = Column(
-        DateTime(timezone=True),
-        default=datetime.now(timezone.utc),
-    )
-    updated_at = Column(
-        DateTime(timezone=True),
-        default=datetime.now(timezone.utc),
-        onupdate=datetime.now(timezone.utc),
-    )
-    deleted_at = Column(DateTime(timezone=True), nullable=True)
+    hashed_password: Mapped[str]
+    created_at: Mapped[CreatedAt]
+    updated_at: Mapped[UpdatedAt]
+    deleted_at: Mapped[DeletedAt]
 
     user = relationship(
         "User",
@@ -64,27 +60,25 @@ class UserSecret(db_common.Base):
     )
 
 
-class Reservation(db_common.Base):
+class Reservation(database.Base):
     __tablename__ = "reservations"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), index=True)
-    start_at = Column(DateTime(timezone=True))
-    end_at = Column(DateTime(timezone=True))
-    applicant_count = Column(Integer)
-    is_confirmed = Column(Boolean, default=False)
-    created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc))
-    updated_at = Column(
-        DateTime(timezone=True),
-        default=datetime.now(timezone.utc),
-        onupdate=datetime.now(timezone.utc),
-    )
-    deleted_at = Column(DateTime(timezone=True), nullable=True)
+    id: Mapped[IntPk]
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), index=True)
+    start_at: Mapped[datetime]
+    end_at: Mapped[datetime]
+    applicant_count: Mapped[int]
+    is_confirmed: Mapped[bool] = mapped_column(default=False)
+    created_at: Mapped[CreatedAt]
+    updated_at: Mapped[UpdatedAt]
+    deleted_at: Mapped[DeletedAt]
 
-    __tableargs__ = Index(
-        "ix_reservations_confirms",
-        "start_at",
-        "end_at",
-        "is_confirmed",
-        "deleted_at",
+    __table_args__ = (
+        Index(
+            "ix_reservations_group_confirm",
+            "start_at",
+            "end_at",
+            "is_confirmed",
+            "deleted_at",
+        ),
     )

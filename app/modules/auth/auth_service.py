@@ -7,6 +7,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasicCredentials, OAuth2PasswordRequestForm
 import jwt
 
+from app.common import utcnow
 from app.schemas import Token, User
 from app.modules.user import user_service
 
@@ -43,7 +44,7 @@ class AuthService:
                 headers={"WWW-Authenticate": "Basic"},
             )
 
-        now_at = datetime.now(timezone.utc)
+        now_at = utcnow()
         access_token_expires_at = now_at + timedelta(
             minutes=ACCESS_TOKEN_EXPIRE_MINUTES
         )
@@ -76,7 +77,7 @@ class AuthService:
             )
 
         access_token = self._create_access_token(
-            datetime.now(timezone.utc),
+            utcnow(),
             user.id,
         )
 

@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 
-from app.common import RoleEnum
+from app.common import Role
 
 
 class Token(BaseModel):
@@ -14,7 +14,7 @@ class Token(BaseModel):
 class User(BaseModel):
     id: int
     username: str
-    role: RoleEnum
+    role: Role
     created_at: datetime
     updated_at: datetime
     deleted_at: Optional[datetime] = None

@@ -1,7 +1,3 @@
-import os
-
-print("db host:", os.environ["DB_HOST"])
-
 from app.common import ignore_passlib_warning
 
 ignore_passlib_warning()

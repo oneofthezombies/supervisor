@@ -71,7 +71,7 @@ class ReservationService:
         reservation = await self._get_reservation(reservation_id)
 
         if self.current_user.role == Role.basic:
-            if reservation.id != self.current_user.id:
+            if reservation.user_id != self.current_user.id:
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
                     detail="You cannot update another user's reservation",
@@ -101,7 +101,7 @@ class ReservationService:
         reservation = await self._get_reservation(reservation_id)
 
         if self.current_user.role == Role.basic:
-            if reservation.id != self.current_user.id:
+            if reservation.user_id != self.current_user.id:
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
                     detail="You cannot delete another user's reservation",
@@ -124,7 +124,7 @@ class ReservationService:
         await self.db_service.refresh(reservation)
         return reservation
 
-    async def read_publics(
+    async def read_public_reservations(
         self, start_at: datetime, end_at: datetime
     ) -> List[ReservationPublic]:
         await self._validate_start_at_and_end_at(start_at, end_at)

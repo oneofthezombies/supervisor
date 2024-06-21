@@ -10,7 +10,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/.venv/Scripts/fastapi.exe",
       "console": "integratedTerminal",
-      "args": ["dev", "src/main.py", "--reload"],
+      "args": ["dev", "app/main.py", "--reload"],
       "envFile": "${workspaceFolder}/.env",
       "env": {
         "PYTHONPATH": "${workspaceFolder}/.venv"

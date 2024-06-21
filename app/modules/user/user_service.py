@@ -38,7 +38,7 @@ class UserService:
         user = result.scalars().first()
         return user
 
-    async def create_basic_user(self, dto: UserCreate, role: Role) -> User:
+    async def create_basic_user(self, dto: UserCreate) -> User:
         return await self._create_user(dto, Role.basic)
 
     async def create_admin_user(self, dto: UserCreate) -> User:

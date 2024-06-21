@@ -54,4 +54,4 @@ async def read_public_reservations(
     _: CurrentUserDep,
     reservation_service: reservation_service.Dep,
 ):
-    return await reservation_service.read_publics(start_at, end_at)
+    return await reservation_service.read_public_reservations(start_at, end_at)

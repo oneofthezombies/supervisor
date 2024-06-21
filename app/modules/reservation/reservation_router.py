@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import List
-from fastapi import APIRouter
+from fastapi import APIRouter, status
 
 from app.modules.reservation import reservation_service
 from app.modules.auth.auth_deps import CurrentUserDep
@@ -17,7 +17,7 @@ async def read_reservations(
     return await reservation_service.read_reservations()
 
 
-@router.post("", response_model=Reservation)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=Reservation)
 async def create_reservation(
     dto: ReservationCreate,
     _: CurrentUserDep,

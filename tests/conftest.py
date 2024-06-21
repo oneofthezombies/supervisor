@@ -1,8 +1,8 @@
 import os
 
 import pytest
-from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi.testclient import TestClient
 
 from app.main import app
 from app import database
@@ -39,6 +39,5 @@ async def setup_db():
 
 
 @pytest.fixture
-async def client():
-    async with AsyncClient(app=app, base_url="http://test") as ac:
-        yield ac
+def client():
+    return TestClient(app)

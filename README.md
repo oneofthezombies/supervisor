@@ -80,7 +80,7 @@ python -m venv .venv
 # Linux, macOS에서 활성화
 source .venv/bin/activate
 
-# 가상환경에 패키지 설치
+# 가상환경에 패키지 설치!
 pip install -r requirements.txt
 ```
 
@@ -112,6 +112,8 @@ Swagger (OpenAPI) UI가 떴다면, 정상 실행이 된 것입니다.
 ```sh
 pytest
 ```
+
+test 파일은 `tests/conftest.py`와 `tests/test_main.py`에 구현했습니다.
 
 ## 모델 설명
 

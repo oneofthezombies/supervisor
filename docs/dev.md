@@ -42,7 +42,7 @@ VS Code에서 아무 `.py` 파일 연 상태에서,
 ### API 서버 실행
 
 ```sh
-dotenv run -- fastapi dev src/main.py --reload
+dotenv run -- fastapi dev app/main.py --reload
 ```
 
 ## DB 마이그레이션 생성

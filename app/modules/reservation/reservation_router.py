@@ -48,7 +48,7 @@ async def delete_reservation(
 
 
 @router.get("/publics")
-async def read_publics(
+async def read_public_reservations(
     start_at: datetime,
     end_at: datetime,
     _: CurrentUserDep,

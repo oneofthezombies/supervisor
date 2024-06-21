@@ -18,7 +18,8 @@ API 서버와 DB 실행을 위해 필요합니다.
 docker version
 ```
 
-_**Docker Engine** 25.02 버전에서 테스트 됐습니다._
+_Windows (x86_64) 플랫폼에서 **Docker Engine** 25.02 버전으로 테스트 됐습니다._  
+_macOS (m1) 플랫폼에서 **Docker Engine** 24.07 버전으로 테스트 됐습니다._
 
 ### Python
 
@@ -29,7 +30,8 @@ DB 마이그레이션, 어드민 계정 생성 그리고 API 테스트를 위해
 python --version
 ```
 
-_**Python** 3.8 버전에서 테스트 됐습니다._
+_Windows (x86_64) 플랫폼에서 **Python** 3.8 버전으로 테스트 됐습니다._  
+_macOS (m1) 플랫폼에서 **Python** 3.12 버전으로 테스트 됐습니다._
 
 ## 실행하는 방법
 

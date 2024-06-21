@@ -8,6 +8,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_HOST: db
       DB_PORT: 5432
+      AUTH_JWT_SECRET_KEY: ${AUTH_JWT_SECRET_KEY}
     ports:
       - "${API_PORT}:8000"
     depends_on:

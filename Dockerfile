@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD dotenv run -- fastapi dev app/main.py --host 0.0.0.0
+CMD fastapi dev app/main.py --host 0.0.0.0

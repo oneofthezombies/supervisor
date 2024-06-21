@@ -2,9 +2,7 @@ import os
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi.testclient import TestClient
 
-from app.main import app
 from app import database
 from app.modules.user.user_service import UserService
 from app.schemas import UserCreate
@@ -38,6 +36,7 @@ async def setup_db():
     yield
 
 
-@pytest.fixture
-def client():
-    return TestClient(app)
+@pytest.fixture(scope="module")
+def shared():
+    data = {}
+    return data

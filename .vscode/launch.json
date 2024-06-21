@@ -15,6 +15,18 @@
       "env": {
         "PYTHONPATH": "${workspaceFolder}/.venv"
       }
+    },
+    {
+      "name": "Debug Test",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "console": "integratedTerminal",
+      "args": []
+      // "envFile": "${workspaceFolder}/.env",
+      // "env": {
+      //   "PYTHONPATH": "${workspaceFolder}/.venv"
+      // }
     }
   ]
 }

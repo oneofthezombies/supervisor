@@ -59,21 +59,7 @@ AUTH_JWT_SECRET_KEY=supervisor
 docker compose up --build -d
 ```
 
-### API 서버 확인
-
-브라우저에서 `http://127.0.0.1:8000/docs`를 접속해주세요.
-
-_만약 환경변수 `API_PORT`의 값을 바꿨다면, 해당 포트로 접속해주세요._
-
-Swagger (OpenAPI) UI가 떴다면, 정상 실행이 된 것입니다.
-
-### 자동화된 테스트
-
-테스트 실행시 아래 항목이 실행됩니다.
-
-- DB 초기화 (기존 데이터 모두 삭제됩니다!)
-- 어드민 계정 생성 (`.env` 내 `ADMIN_USERNAME`, `ADMIN_PASSWORD`로 생성됩니다.)
-- API 테스트
+### DB 마이그레이션
 
 먼저, 파이썬 가상환경을 활성화해주세요.
 
@@ -90,6 +76,29 @@ source .venv/bin/activate
 # 가상환경에 패키지 설치
 pip install -r requirements.txt
 ```
+
+아래 명령어를 호출해, DB를 마이그레이션 해주세요.
+
+```sh
+dotenv run -- alembic upgrade head
+```
+
+### API 서버 확인
+
+브라우저에서 `http://127.0.0.1:8000/docs`를 접속해주세요.
+
+_만약 환경변수 `API_PORT`의 값을 바꿨다면, 해당 포트로 접속해주세요._
+
+Swagger (OpenAPI) UI가 떴다면, 정상 실행이 된 것입니다.
+
+### 자동화된 테스트
+
+테스트 실행시 아래 항목이 실행됩니다.
+
+- 어드민 계정 생성
+  - `.env` 내 `ADMIN_USERNAME`, `ADMIN_PASSWORD`로 생성됩니다.
+  - 해당 사용자명이 존재하면, 스킵됩니다.
+- API 테스트
 
 아래 명령어를 사용해, 테스트를 실행해주세요.
 

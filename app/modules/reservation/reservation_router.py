@@ -4,7 +4,12 @@ from fastapi import APIRouter, status
 
 from app.modules.reservation import reservation_service
 from app.modules.auth.auth_deps import CurrentUserDep
-from app.schemas import Reservation, ReservationCreate, ReservationUpdate
+from app.schemas import (
+    Reservation,
+    ReservationCreate,
+    ReservationPublic,
+    ReservationUpdate,
+)
 
 router = APIRouter(prefix="/reservations")
 
@@ -47,7 +52,7 @@ async def delete_reservation(
     )
 
 
-@router.get("/publics")
+@router.get("/publics", response_model=List[ReservationPublic])
 async def read_public_reservations(
     start_at: datetime,
     end_at: datetime,
